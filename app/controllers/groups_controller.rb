@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
   def edit
 
    end
-    end
+
  def new
    @group = Group.new
  end
@@ -19,6 +19,7 @@ class GroupsController < ApplicationController
    @group = Group.new(group_params)
     @group.user = current_user
    if @group.save
+
      redirect_to groups_path
    else
      render :new
@@ -39,20 +40,19 @@ class GroupsController < ApplicationController
   @group.destroy
   redirect_to groups_path, alert: "Group deleted"
   end
- def join
-    @group = Group.find(params[:id])
 
+  def join
+    @group = Group.find(params[:id])
      if !current_user.is_member_of?(@group)
        current_user.join!(@group)
        flash[:notice] = "加入本讨论版成功！"
      else
        flash[:warning] = "你已经是本讨论版成员了！"
      end
-
      redirect_to group_path(@group)
    end
 
-def quit
+   def quit
      @group = Group.find(params[:id])
 
      if current_user.is_member_of?(@group)
@@ -64,7 +64,6 @@ def quit
 
      redirect_to group_path(@group)
    end
-
  private
 
  def find_group_and_check_permission
@@ -78,3 +77,4 @@ def quit
  def group_params
      params.require(:group).permit(:title, :description)
    end
+end
